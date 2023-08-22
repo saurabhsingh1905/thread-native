@@ -30,7 +30,7 @@ const checkLoginStatus = async ()=>{
 
     if(token){
       setTimeout (()=> {
-        navigation.replace("Home")
+        navigation.replace("Main")
       },400)
     }
    } catch (error) {
