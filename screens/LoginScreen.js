@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Pressable,
@@ -7,17 +8,56 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
   
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
+  //to ccheck if at all the user is loggedIN or not if at all app is refreshed & again opened up 
+  useEffect(()=> {
+const checkLoginStatus = async ()=>{
+   try {
+    const token = await AsyncStorage.getItem("authToken")
+
+    if(token){
+      setTimeout (()=> {
+        navigation.replace("Home")
+      },400)
+    }
+   } catch (error) {
+    console.log("Error ", error)
+   }
+}
+checkLoginStatus()
+  },[])
+
+  const handleLogin = ()=> {
+    const user = {
+      email:email,
+      password:password
+    }
+
+    axios.post("http://192.168.151.136:3000/login" ,user).then((response)=>{
+      //  console.log(response)
+
+      const token = response.data.token;
+    AsyncStorage.setItem("authToken",token)
+    navigation.navigate("Home")
+    }).catch((error)=> {
+      Alert.alert("Login Error", "Something went wrong")
+      console.log("Error" , error)
+    })
+
+  }
 
   return (
     <SafeAreaView
@@ -124,6 +164,7 @@ const LoginScreen = () => {
         <View style={{ marginTop: 45 }} />
 
         <Pressable
+        onPress={handleLogin}
           style={{
             width:200,
             borderWidth: 0.8,

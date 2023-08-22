@@ -29,8 +29,9 @@ const RegisterScreen = () => {
       email: email,
       password: password,
     };
+    // console.log(user)
 
-    axios.post("http://192.168.151.136/3000/register", user).then((response)=> {
+    axios.post("http://192.168.151.136:3000/register", user).then((response)=> {
         console.log(response)
         Alert.alert("Registration Successful","You have been successfully registered")
         setName("")

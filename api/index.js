@@ -14,7 +14,7 @@ app.use(cors())
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-
+//
 mongoose
   .connect("mongodb+srv://singhsaurabh1905:aIYrJIzj4EtR1lE2@cluster0.w8yvfmg.mongodb.net/", {
     useNewUrlParser: true,
@@ -33,7 +33,7 @@ mongoose
   });
 
 
-  //  ENDPOINT TO REGISTER A USER IN THE BACKEND =====================================================
+  //  ENDPOINT TO REGISTER A USER IN THE BACKEND =============================================================================
   app.post("/register",async(req,res)=> {
     try {
         const {name,email,password} = req.body ;
@@ -48,13 +48,13 @@ mongoose
         const newUser = new User({name,email,password})
 
         //generate & store the verification token
-        newUser.verificationToken = crypto.randomBytes[20].toString["hex"]
+        newUser.verificationToken = crypto.randomBytes(20).toString("hex")
 
         //save the user to the database 
         await newUser.save()
 
             //send the verification email to the user 
-            sendverificationEmail(newUser.email,newUser.verificationToken)
+            sendVerificationEmail(newUser.email,newUser.verificationToken)
 
             res.status(200).json({message:"Registration successful please check your email for verification"})
         
@@ -71,8 +71,8 @@ const transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
         user:"singhsaurabh1905@gmail.com",
-        // pass:"drqonvgeuicsuvlp"
-        pass:process.env.EMAILPASS
+         pass:"drqonvgeuicsuvlp"
+        // pass:process.env.EMAILPASS
     }
 })
 
@@ -81,7 +81,7 @@ const mailOptions ={
     from:"threads.com",
     to:email,
     subject:"Email Verification",
-    text:`Please click the following link to verify your email https://localhost:3000/verify/${verificationToken} `
+    text:`Please click the following link to verify your email https://192.168.151.136:3000/verify/${verificationToken} `
 }
 
 try {
@@ -119,7 +119,7 @@ app.get("/verify/:token",async (req,res)=> {
 
 //generate secretKey
 const generateSecretKey = ()=> {
-const secretKey = crypto.randomBytes[32].toString["hex"]
+const secretKey = crypto.randomBytes(32).toString("hex")
 return secretKey
 }
 
