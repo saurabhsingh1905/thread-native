@@ -146,3 +146,53 @@ app.post("/login",async(req,res)=> {
         res.status(500).json({message:"Login failed"})
     }
 })
+
+
+// ENDPOINT TO EXCESS ALL THE USER EXCEPT LOGEDIN USER AS LOGEDIN USER CANT FOLLOW ITSELF+++++++++++++++=====
+app.get("/user/:userId",(req,res)=> {
+    try {
+        const logedInUser = req.params.userId ;
+
+        User.find({_id : {$ne:logedInUser}}).then((users)=> {
+res.status(200).json(users)
+        }).catch((error)=> {
+            console.log("Error",error)
+            res.status(500).json({message:"Error getting the users "})
+        })
+
+    } catch (error) {
+        res.status(500).json({message:"Error getting the user"})
+    }
+})
+
+
+//ENDPOINT TO FOLLOW A PARTICULAR USER+++++++++++++++++++++++++++++++++++=================================
+app.post("/follow",async(req,res)=>{
+
+    const {currentUserId,selectedUserId} = req.body;
+
+    try {
+        await User.findByIdAndUpdate(selectedUserId,{
+            $push:{followers:currentUserId}
+        })
+        res.sendStatus(200)
+    } catch (error) {
+        console.log("Error ",error)
+        res.status(500).json({message:"error while  following a user"})
+    }
+})
+
+
+//ENDPOINT TO UNFOLLOW A USER +++++++++++++++++++++++++++=================================================
+app.post("/user/unfollow",async( req,res)=>{
+    const {loggedInUserId,targetUserId} = req.body ;
+
+    try {
+        await User.findByIdAndUpdate(targetUserId,{
+            $pull: {followers:loggedInUserId}
+        })
+        res.status(200).json({message:"Unfollowed successfully"})
+    } catch (error) {
+        res.status(500).json({message:"Error unfollowing the user"})
+    }
+})

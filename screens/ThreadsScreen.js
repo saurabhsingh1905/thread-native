@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 const ThreadsScreen = () => {
   return (
-    <View>
-      <Text>ThreadsScreen</Text>
-    </View>
+    <ScrollView style={{marginTop:50}}>
+    <Text>ThreadsScreen</Text>
+  </ScrollView>
   )
 }
 

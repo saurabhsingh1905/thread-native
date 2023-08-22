@@ -5,15 +5,43 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode"
+import axios from "axios";
+import { UserType } from "../UserContext";
+import User from "../components/User";
 
 const ActivityScreen = () => {
   const [selectedButton, setSelectedButton] = useState("people");
   const [content, setContent] = useState("People content");
+  const [users,setUsers] = useState([])
+const {userId,setUserId} = useContext(UserType)
 
   const handleButtonClick = (buttonName)=> {
     setSelectedButton(buttonName)
   }
+
+  useEffect(()=>{
+const fetchUsers = async ()=> {
+  const token = await AsyncStorage.getItem("authToken")
+
+  const decodedToken = jwt_decode(token)
+  // console.log(decodedToken)
+
+  const userId = decodedToken.userId
+  setUserId (userId );
+
+  axios.get(`http://192.168.151.136:3000/user/${userId}`).then((response)=> {
+setUsers(response.data)
+  }).catch((error)=> {
+    console.log("Error getting Users" , error)
+  })
+}
+
+fetchUsers()
+  },[])
+  console.log("Users hai" , users)
 
   return (
     <ScrollView style={{ marginTop: 50 }}>
@@ -101,6 +129,16 @@ const ActivityScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
+
+      <View>
+        {selectedButton === "people" && ( 
+          <View style={{marginTop:20}}> 
+            {users.map ((item,index)=> (
+              <User key={index} item={item} />
+            ))}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
