@@ -4,13 +4,13 @@ import { UserType } from "../UserContext";
 
 const User = ({ item }) => {
   const { userId, setUserId } = useContext(UserType);
-  console.log(userId);
+  // console.log(userId);
 
   const [requestSent, setRequestSent] = useState(false);
 
   const sendFollow = async (currentUserId, selectedUserId) => {
     try {
-      const response = await fetch("http://192.168.151.136:3000/follow", {
+      const response = await fetch("http://192.168.132.136:3000/follow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,9 +26,9 @@ const User = ({ item }) => {
     }
   };
 
-  const handleUnFollow = async (req, res) => {
+  const handleUnFollow = async (targetId) => {
     try {
-      const response = await fetch("http://192.168.151.136:3000/follow", {
+      const response = await fetch("http://192.168.132.136:3000/user/unfollow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const User = ({ item }) => {
         console.log("Unfollowed successfully")
       }
     } catch (error) {
-      console.log("Error ", error);
+      console.log("Error while unfollow ", error.message);
       res.status(500).json({ message: "error Unfollowing the user" });
     }
   };
