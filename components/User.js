@@ -10,7 +10,7 @@ const User = ({ item }) => {
 
   const sendFollow = async (currentUserId, selectedUserId) => {
     try {
-      const response = await fetch("http://192.168.132.136:3000/follow", {
+      const response = await fetch("http://192.168.32.136:3000/follow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +28,7 @@ const User = ({ item }) => {
 
   const handleUnFollow = async (targetId) => {
     try {
-      const response = await fetch("http://192.168.132.136:3000/user/unfollow", {
+      const response = await fetch("http://192.168.32.136:3000/user/unfollow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

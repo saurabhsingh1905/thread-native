@@ -32,7 +32,7 @@ const fetchUsers = async ()=> {
   const userId = decodedToken.userId
   setUserId (userId );
 
-  axios.get(`http://192.168.132.136:3000/user/${userId}`).then((response)=> {
+  axios.get(`http://192.168.32.136:3000/user/${userId}`).then((response)=> {
 setUsers(response.data)
   }).catch((error)=> {
     console.log("Error getting Users" , error)

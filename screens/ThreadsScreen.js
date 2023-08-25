@@ -26,7 +26,7 @@ const ThreadsScreen = () => {
     }
 
     axios
-      .post("http://192.168.132.136:3000/create-post", postData)
+      .post("http://192.168.32.136:3000/create-post", postData)
       .then((response) => {
         setContent("");
       })
@@ -38,7 +38,7 @@ const ThreadsScreen = () => {
   return (
     <ScrollView style={{}}>
       <SafeAreaView style={{ padding: 10 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 ,marginTop:20}}>
           <Image
             style={{
               width: 40,
@@ -54,7 +54,7 @@ const ThreadsScreen = () => {
           <Text>Shivi</Text>
         </View>
 
-        <View style={{ flexDirection: "row", marginLeft: 10 }}>
+        <View style={{ flexDirection: "row", marginLeft: 10,marginTop:30 }}>
           <TextInput
             placeholder="Type Your Thread...."
             placeholderTextColor={"black"}
@@ -66,7 +66,7 @@ const ThreadsScreen = () => {
 
         <View style={{ marginTop: 20 }} />
 
-        <Button title="Share Thread" />
+        <Button onPress={handlePostSubmit} title="Share Thread" />
       </SafeAreaView>
     </ScrollView>
   );

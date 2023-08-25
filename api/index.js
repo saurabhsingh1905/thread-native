@@ -197,6 +197,7 @@ app.post("/user/unfollow", async (req, res) => {
 });
 
 //ENDPOINT TO CREATE A NEW POST IN THE THREAD
+
 app.post("/create-post", async (req, res) => {
   try {
     const { content, userId } = req.body;
@@ -213,14 +214,15 @@ app.post("/create-post", async (req, res) => {
 
     await newPost.save();
 
-    res.status(200).json({ message: "Thread added successfully" });
+    res.status(200).json({ message: "Post saved successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error Adding new thread of the user" });
+    res.status(500).json({ message: "post creation failed" });
   }
 });
 
+
 //ENDPOINT FOR LIKING A PARTICULAR THREAD
-app.put("/post/:postId/:userId/like", async (req, res) => {
+app.put("/posts/:postId/:userId/like", async (req, res) => {
   try {
     const postId = req.params.postId;
     const userId = req.params.userId;
@@ -248,7 +250,7 @@ app.put("/post/:postId/:userId/like", async (req, res) => {
 });
 
 //ENDPOINT FOR UNLIKING A PARTICULAR THREAD
-app.put("/post/:postId/:userId/unlike", async (req, res) => {
+app.put("/posts/:postId/:userId/unlike", async (req, res) => {
   const postId = req.params.postId;
   const userId = req.params.userId;
 
@@ -278,7 +280,7 @@ app.put("/post/:postId/:userId/unlike", async (req, res) => {
 
 //ENDPOINT TO GET ALL THE POST
 
-app.post("/get-post", async (req, res) => {
+app.get("/get-posts", async (req, res) => {
   try {
     const posts = await Post.find()
       .populate("user", "name")
@@ -287,5 +289,23 @@ app.post("/get-post", async (req, res) => {
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: "Error getting thread for the user" });
+  }
+});
+
+
+//FOR GETTING USER FOR PROFILE SECTION
+app.get("/profile/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ message: "Error while getting the profile" });
   }
 });

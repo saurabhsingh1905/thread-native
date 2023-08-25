@@ -23,22 +23,22 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   //to ccheck if at all the user is loggedIN or not if at all app is refreshed & again opened up 
-  useEffect(()=> {
-const checkLoginStatus = async ()=>{
-   try {
-    const token = await AsyncStorage.getItem("authToken")
+//   useEffect(()=> {
+// const checkLoginStatus = async ()=>{
+//    try {
+//     const token = await AsyncStorage.getItem("authToken")
 
-    if(token){
-      setTimeout (()=> {
-        navigation.replace("Main")
-      },400)
-    }
-   } catch (error) {
-    console.log("Error ", error)
-   }
-}
-checkLoginStatus()
-  },[])
+//     if(token){
+//       setTimeout (()=> {
+//         navigation.replace("Main")
+//       },400)
+//     }
+//    } catch (error) {
+//     console.log("Error ", error)
+//    }
+// }
+// checkLoginStatus()
+//   },[])
 
   const handleLogin = ()=> {
     const user = {
@@ -46,12 +46,12 @@ checkLoginStatus()
       password:password
     }
 
-    axios.post("http://192.168.151.136:3000/login" ,user).then((response)=>{
+    axios.post("http://192.168.32.136:3000/login" ,user).then((response)=>{
       //  console.log(response)
 
       const token = response.data.token;
     AsyncStorage.setItem("authToken",token)
-    navigation.navigate("Home")
+    navigation.navigate("Main")
     }).catch((error)=> {
       Alert.alert("Login Error", "Something went wrong")
       console.log("Error" , error)
